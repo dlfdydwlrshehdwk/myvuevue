@@ -1,8 +1,6 @@
 <template>
 
-
-
-<div class="black-bg" v-if="모달창열렸니 == true">
+<!-- <div class="black-bg" v-if="모달창열렸니 == true">
   <div class="white-bg">
     <img :src="원룸들[누른거].image" alt="">
     <h4>{{원룸들[누른거].title}}</h4>
@@ -10,8 +8,11 @@
     <p>{{원룸들[누른거].price}}원</p>
     <button @click="모달창열렸니 = false">닫기</button>
   </div>
-</div>
+</div> -->
 
+<!-- <ModalOne :누른거="누른거" :원룸들="원룸들" :모달창열렸니="모달창열렸니"/> -->
+
+<!-- <Modal v-bind:데이터이름="" /> 와 같다. -->
 
 
   <!-- <div>
@@ -26,10 +27,19 @@
     <h4 :style="스타일">{{products[2]}} 원룸</h4>
     <p>{{ price2 }}가격은아무거나</p>
   </div> -->
+
+<Modal :원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"></Modal>
+
   <div class="menu">
     <a v-for="작명, in 메뉴들" :key="작명">{{작명}}</a>
 </div>
+
 <Discount></Discount>
+
+<Card :원룸="원룸들[i]" v-for="(작명,i) in 원룸들" :key="작명"></Card>
+
+
+
 <!-- <div>
 <h4>{{products[0]}}</h4>
 <p>{{price[0]}}</p>
@@ -72,16 +82,13 @@
   <span>신고수 : {{신고수[2]}}</span>
 </div> -->
 
-<div v-for="(a,i) in 원룸들" :key="i">
-  <img :src="원룸들[i].image" alt="1" class="roomimage">
+<!-- <div v-for="(a,i) in 원룸들" :key="i">
+  <img :src="원룸들[i].image" alt="" class="roomimage">
   <h4 @click="모달창열렸니 = true; 누른거 = i">{{원룸들[i].title}}</h4>
   <p>{{원룸들[i].price}}원</p>
   <button v-on:click="신고수[i]++">허위매물신고</button>
   <span>신고수 : {{신고수[i]}}</span>
-</div>
-
-<Discount></Discount>
-
+</div> -->
 
 </template>
 <!-- vue의 for문 작성법1 - 한가지 내용을 반복하고 싶을 때
@@ -135,6 +142,8 @@ v-on 뒤에는 여러가지 이벤트가 사용가능하다
 
 import data from './assets/oneroom.js';
 import Discount from './Discount.vue';
+import Modal from './Modal.vue';
+import Card from './Card.vue';
 
 
 
@@ -142,7 +151,6 @@ export default {
   name: "App",
   data() {
     return {
-      
       누른거 : 0,
       원룸들 : data,
       모달창열렸니 : false,
@@ -151,21 +159,18 @@ export default {
       메뉴들 : ['Home', 'Shop', 'About'],
       products : ['역삼동원룸', '천호동원룸', '마포구원룸'],
       스타일 : 'font-size: 20px',
-      방사진 : []
     }
   },
   methods : {
     increase(){
       this.신고수 +=1;
     },
-    hamsoo(){
-
-    }  
   },
   components:{
-      Discount : Discount,
-      // 앞뒤가 똑같을때는 Discount, 로만 축약 가능 왼쪽은 자유작명가능
-    }
+    Discount: Discount,
+    Modal: Modal,
+    Card : Card,
+}
 };
 // vue에서 함수 만들때 주의사항
 // 함수를 만들때는 methods : {}을 만들어주고 그 안에 작성해야함
