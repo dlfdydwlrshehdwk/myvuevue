@@ -1,6 +1,20 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <div>
+
+
+
+<div class="black-bg" v-if="모달창열렸니 == true">
+  <div class="white-bg">
+    <img :src="원룸들[누른거].image" alt="">
+    <h4>{{원룸들[누른거].title}}</h4>
+    <p>{{원룸들[누른거].content}}</p>
+    <p>{{원룸들[누른거].price}}원</p>
+    <button @click="모달창열렸니 = false">닫기</button>
+  </div>
+</div>
+
+
+
+  <!-- <div>
     <h4 :style="스타일">{{products[0]}} 원룸</h4>
     <p>{{ price1 }} 만원</p>
   </div>
@@ -11,22 +25,153 @@
   <div>
     <h4 :style="스타일">{{products[2]}} 원룸</h4>
     <p>{{ price2 }}가격은아무거나</p>
-  </div>
+  </div> -->
+  <div class="menu">
+    <a v-for="작명, in 메뉴들" :key="작명">{{작명}}</a>
+</div>
+<Discount></Discount>
+<!-- <div>
+<h4>{{products[0]}}</h4>
+<p>{{price[0]}}</p>
+<button v-on:click="신고수[0]++">허위매물신고</button>
+<span>신고수 : {{신고수[0]}}</span>
+</div>
+<div>
+<h4>{{products[1]}}</h4>
+<p>{{price[1]}}</p>
+<button v-on:click="신고수[1]++">허위매물신고</button>
+<span>신고수 : {{신고수[1]}}</span>
+</div>
+<div>
+<h4>{{products[2]}}</h4>
+<p>{{price[2]}}</p>
+<button v-on:click="신고수[2]++">허위매물신고</button>
+<span>신고수 : {{신고수[2]}}</span>
+</div> -->
+
+
+<!-- <div>
+  <img :src="원룸들[0].image" alt="1" class="roomimage">
+  <h4 @click="모달창열렸니 =true">{{원룸들[0].title}}</h4>
+  <p>{{원룸들[0].price}}원</p>
+  <button v-on:click="신고수[0]++">허위매물신고</button>
+  <span>신고수 : {{신고수[0]}}</span>
+</div>
+<div>
+  <img :src="원룸들[1].image" alt="1" class="roomimage">
+  <h4>{{원룸들[1].title}}</h4>
+  <p>{{원룸들[1].price}}원</p>
+  <button v-on:click="신고수[1]++">허위매물신고</button>
+  <span>신고수 : {{신고수[1]}}</span>
+</div>
+<div>
+  <img :src="원룸들[2].image" alt="1" class="roomimage">
+  <h4>{{원룸들[2].title}}</h4>
+  <p>{{원룸들[2].price}}원</p>
+  <button v-on:click="신고수[2]++">허위매물신고</button>
+  <span>신고수 : {{신고수[2]}}</span>
+</div> -->
+
+<div v-for="(a,i) in 원룸들" :key="i">
+  <img :src="원룸들[i].image" alt="1" class="roomimage">
+  <h4 @click="모달창열렸니 = true; 누른거 = i">{{원룸들[i].title}}</h4>
+  <p>{{원룸들[i].price}}원</p>
+  <button v-on:click="신고수[i]++">허위매물신고</button>
+  <span>신고수 : {{신고수[i]}}</span>
+</div>
+
+<Discount></Discount>
+
+
 </template>
+<!-- vue의 for문 작성법1 - 한가지 내용을 반복하고 싶을 때
+    <div v-for="작명 in 몇회" :key"작명"></div>
+-->
+<!-- vue의 for문 작성법2 - 2가지 이상의 내용을 반복하고 싶을 때
+  <div v-for="(작명,i) in products" :key="작명" >
+  <h4>{{products[i]}}</h4>
+  <p>{{price[i]}}</p>
+</div>
+products : ['역삼동원룸', '천호동원룸', '마포구원룸']
+price: ['50만원', '40만원', '30만원']
+i는 i++ 이라고 생각하면됨 실행시 다음식을 읽음
+products의 내용수 만큼 실행된다 
+
+<div v-for="(a,i) in products" :key="a">
+  <h4>{{products[i]}}</h4>
+<p>{{price[i]}}</p>
+<button v-on:click="신고수[i]++">허위매물신고</button>
+<span>신고수 : {{신고수[i]}}</span>
+</div>
+
+-->
+
+<!-- 이벤트 다는법
+<button v-on:click="신고수++">허위매물신고</button>
+<span>신고수 : {{신고수}}</span>
+
+vue에서 이벤트를 실행할때는 v-on:이벤트 를 하는데
+v-on: 은 @ 와 의미가 같다 그래서
+<button @click="신고수++">허위매물신고</button>
+라고 해도 잘 작동된다.
+신고수++ 부분은 신고수+=1 이나 신고수 = 신고수 +1 이라고 해도 같다.
+v-on 뒤에는 여러가지 이벤트가 사용가능하다
+-->
+
+<!-- v-if 문법 더 알아야 할 내용 
+  <div v-ir="1 == 1">
+    안녕하세요
+  </div>
+  <div v-else-if="1 == 3">
+    안녕하세요2
+  </div>
+  <div v-else>
+    안녕하세요3
+  </div>
+-->
+
 
 <script>
+
+import data from './assets/oneroom.js';
+import Discount from './Discount.vue';
+
+
 
 export default {
   name: "App",
   data() {
     return {
-      price1: 80,
-      price2: 70,
+      
+      누른거 : 0,
+      원룸들 : data,
+      모달창열렸니 : false,
+      신고수 : [0,0,0],
+      price: ['50만원', '40만원', '30만원'],
+      메뉴들 : ['Home', 'Shop', 'About'],
       products : ['역삼동원룸', '천호동원룸', '마포구원룸'],
       스타일 : 'font-size: 20px',
-    };
+      방사진 : []
+    }
   },
+  methods : {
+    increase(){
+      this.신고수 +=1;
+    },
+    hamsoo(){
+
+    }  
+  },
+  components:{
+      Discount : Discount,
+      // 앞뒤가 똑같을때는 Discount, 로만 축약 가능 왼쪽은 자유작명가능
+    }
 };
+// vue에서 함수 만들때 주의사항
+// 함수를 만들때는 methods : {}을 만들어주고 그 안에 작성해야함
+// 함수안에서 데이터를 만들땐 this.데이터명 으로 할것
+// 위 처럼해야 같은 같은 오브젝트안에 있는 데이터를 불러올 수 있다.
+
 </script>
 
 <style>
@@ -36,7 +181,38 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+.menu{
+  background: darkslateblue;
+  padding: 15px;
+  border-radius: 5px;
+  
+}
+.menu a{
+  padding: 10px;
+  color: aliceblue;
+}
+.roomimage{
+  width: 100%;
+  margin-top: 20px;
+}
+.black-bg{
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed; padding :20px;
+}
+.white-bg{
+  width: 100%; 
+  background : white;
+  border-radius: 8px;
+  padding : 20px;
+}
+.discount{
+  background: #eee;
+  padding : 10px;
+  margin : 10px;
+  border-radius: 5px;
 }
 </style>
 
@@ -49,5 +225,12 @@ node_modules : 프로젝트에 쓰는 라이브러리들
 src : 소스코드 담는곳
 public : html파일, 기타파일보관하는곳
 package.json : 라이브러리 버전, 프로젝트 설정기록하는곳
+-->
 
+<!-- 동적인 UI 만드는법 
+1. UI의 현재상태를 데이터로 저장해둠
+    그 UI가 지금 어떻게 보여아하는가?
+2. 데이터에 따라 UI가 어떻게 K보일지 작성
+    데이터에 따라 UI가 어떻게 보여야하는지 작성
+    데이터가 true면 어떤것이 보이고 false면 어떤것이 보일지
 -->
