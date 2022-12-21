@@ -1,8 +1,9 @@
 <template>
 <div>
   <img :src="원룸.image" alt="" class="roomimage">
-  <h4>{{ 원룸.title }}</h4>
+  <h4 @click="send">{{ 원룸.title }}</h4>
   <p>{{원룸.price}}원</p>
+  
 </div>  
 </template>
 
@@ -11,6 +12,11 @@ export default {
     name : 'Card',
     props : {
         원룸 : Object,
+    },
+    methods : {
+      send(){
+        this.$emit('openmodal',this.원룸.id)
+      }
     }
 
 }

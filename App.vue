@@ -28,15 +28,52 @@
     <p>{{ price2 }}가격은아무거나</p>
   </div> -->
 
-<Modal :원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"></Modal>
+  <transition name="fade">
+    <Modal @bend="모달창열렸니=false" :원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"></Modal>
+  </transition>
+  <!-- vue 애니메이션 문법
+    1.애니메이션 주고싶은 요소를
+    <transition name=:"작명"> 으로 감싸기 
+    2. class명을 3개작성
+    .작명-enter-from{} -시작스타일
+    .작명-enter-active{} -transition
+    .작명-enter-to{}  - 끝날때스타일
+      퇴장애니메이션 설정은
+    .작명-leave-from{}
+    .작명-leave-active{}
+    .작명-leave-to{} 
 
+
+
+   -->
+
+  <!--
+    <div class="start" :class="{ end : 모달창열렸니 }">
+   <Modal @bend="모달창열렸니=false" :원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"></Modal>
+  </div>
+  css내용 
+    .start{opacity: 0; transition: all 1s;}
+    .end{ opacity 1;}  일 때
+    
+    :class="" 데이터바인딩 :속성="데이터이름" 
+  조건이 true일때만 css가 적용되게끔 설정된것
+  모달창열렸니가 실행되면 1 ture기 때문에 
+  end : true  로 하나 end : 모달창열렸니 로 하나 결과는 같다.
+  조건부로 class를 넣는 조건 {클래스명 : 조건}
+-->
+ 
   <div class="menu">
     <a v-for="작명, in 메뉴들" :key="작명">{{작명}}</a>
 </div>
 
 <Discount></Discount>
 
-<Card :원룸="원룸들[i]" v-for="(작명,i) in 원룸들" :key="작명"></Card>
+<button @click="priceSort">가격순정렬</button>
+<button @click="sortBack">되돌리기</button>
+
+<Card @openmodal="모달창열렸니 =true; 누른거 = $event" :원룸="원룸들[i]" 
+ v-for="(작명,i) in 원룸들" :key="작명"></Card>
+
 
 
 
@@ -151,6 +188,8 @@ export default {
   name: "App",
   data() {
     return {
+      원룸들오리지널 : [...data],
+      // array/object데이터의 별개의 사본을 만들려면 [...array자료]
       누른거 : 0,
       원룸들 : data,
       모달창열렸니 : false,
@@ -165,6 +204,15 @@ export default {
     increase(){
       this.신고수 +=1;
     },
+    priceSort(){
+      this.원룸들.sort(function(a,b){
+        return a.price - b.price
+      })
+    },
+    sortBack(){
+      this.원룸들 = [...this.원룸들오리지널];
+    },
+    // .sort() 문법 설명 작은숫자부터정렬 ㄱㄴㄷ순정렬
   },
   components:{
     Discount: Discount,
@@ -180,6 +228,22 @@ export default {
 </script>
 
 <style>
+.fade-enter-from{
+/* opacity: 0; */
+transform: translateY(-1000px);
+}
+ /*시작시스타일  */
+.fade-enter-active{
+  transition: all 1s;
+}
+/* 애니메이션조건 */
+.fade-enter-to{
+/* opacity: 1; */
+transform: translateY(0px);
+}
+/* 끝날시스타일 */
+
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
