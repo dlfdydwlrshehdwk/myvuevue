@@ -68,8 +68,10 @@
 
 <Discount></Discount>
 
-<button @click="priceSort">가격순정렬</button>
+<button @click="priceSort">가격 낮은순 정렬</button>
 <button @click="sortBack">되돌리기</button>
+<button @click="priceHigh">가격 높은순 정렬</button>
+<button @click="ganada">가나다순 정렬</button>
 
 <Card @openmodal="모달창열렸니 =true; 누른거 = $event" :원룸="원룸들[i]" 
  v-for="(작명,i) in 원룸들" :key="작명"></Card>
@@ -212,7 +214,18 @@ export default {
     sortBack(){
       this.원룸들 = [...this.원룸들오리지널];
     },
+    priceHigh(){
+      this.원룸들.sort(function(a,b){
+        return b.price-a.price
+      })
+    },
+    ganada(){
+      this.원룸들.sort(function(a,b){
+        return a.title.toUpperCase() < b.title.toUpperCase()? -1 :1
+      })
+    },
     // .sort() 문법 설명 작은숫자부터정렬 ㄱㄴㄷ순정렬
+    
   },
   components:{
     Discount: Discount,
